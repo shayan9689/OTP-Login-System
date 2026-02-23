@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Environment (do not commit credentials)
+.env
+server/.env
+client/.env
+client/.env.local
+client/.env.production.local
+
+# Build
+client/dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
