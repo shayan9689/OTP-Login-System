@@ -123,6 +123,32 @@ npm run preview
 
 Or serve the `client/dist` folder with any static host. Set `VITE_API_URL` to your backend URL before building if it is not same-origin.
 
+## Deploy on Vercel
+
+The **client** folder can be deployed to [Vercel](https://vercel.com) with the API running as serverless functions on the same project.
+
+1. **Import project**
+   - Go to [vercel.com](https://vercel.com) → Add New → Project.
+   - Import your Git repository (`OTP-Login-System`).
+
+2. **Configure build**
+   - **Root Directory:** set to `client` (so Vercel builds the Vite app and uses `client/api` as API routes).
+   - Leave **Framework Preset** as Vite (auto-detected).
+   - Build and output are automatic.
+
+3. **Environment variables** (Project → Settings → Environment Variables)
+   - **RESEND_API_KEY** – Your [Resend](https://resend.com) API key (for sending OTP emails over HTTPS). Create one at [resend.com/api-keys](https://resend.com/api-keys).
+
+4. **Vercel KV (OTP storage)**
+   - In the Vercel project: Storage tab → Create Database → choose **KV** (or connect **Upstash Redis** from the Integrations marketplace).
+   - Link the store to your project. This adds `KV_REST_API_URL` and `KV_REST_API_TOKEN` automatically. OTPs are stored in KV with a 60-second TTL.
+
+5. **Deploy**
+   - Click Deploy. The app will be at `https://your-project.vercel.app`.  
+   - Send OTP and Verify use `/api/send-otp` and `/api/verify-otp` on the same domain.
+
+**Note:** For local development you still run the **server** (Node/Express) and the **client** (Vite) as described above. The Vercel deployment uses only the `client` folder (frontend + serverless API).
+
 ## API
 
 | Method | Endpoint      | Body                          | Description        |
