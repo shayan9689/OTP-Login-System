@@ -1,0 +1,14 @@
+{
+  "name": "otp-login-system",
+  "private": true,
+  "version": "1.0.0",
+  "description": "OTP Login – deploy to Vercel (frontend + API)",
+  "scripts": {
+    "build": "cd client && npm install && npm run build",
+    "dev": "cd client && npm run dev"
+  },
+  "dependencies": {
+    "@vercel/kv": "^0.2.0",
+    "resend": "^3.2.0"
+  }
+}
