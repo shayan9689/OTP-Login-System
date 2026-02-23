@@ -26,16 +26,7 @@ async function sendOTP(req, res) {
     });
   } catch (err) {
     console.error('Send OTP error:', err.message || err);
-    const msg = (err.message || '').toLowerCase();
-    const code = err.code || '';
-    let userMessage = 'Failed to send OTP. Please try again later.';
-    if (code === 'ETIMEDOUT' || code === 'ECONNREFUSED' || msg.includes('connect etimedout')) {
-      userMessage = 'Cannot reach Gmail (network/firewall). Try another network or allow outbound port 587.';
-    } else if (msg.includes('invalid login') || msg.includes('username and password not accepted') || msg.includes('authentication failed')) {
-      userMessage = 'Invalid email credentials. Use Gmail App Password in server/.env (not your normal password).';
-    } else if (msg.includes('email_user') || msg.includes('email_pass')) {
-      userMessage = 'Server misconfigured: check EMAIL_USER and EMAIL_PASS in server/.env.';
-    }
+    const userMessage = err.message || 'Failed to send OTP. Please try again later.';
     return res.status(500).json({
       success: false,
       message: userMessage,

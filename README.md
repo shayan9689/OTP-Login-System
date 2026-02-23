@@ -43,7 +43,7 @@ OTP-Login-System/
 ## Prerequisites
 
 - Node.js 18+
-- Gmail account with [App Password](https://support.google.com/accounts/answer/185833) (2FA must be enabled)
+- [Resend](https://resend.com) account (free tier: 100 emails/day). Get an API key at [resend.com/api-keys](https://resend.com/api-keys).
 
 ## Installation
 
@@ -54,7 +54,7 @@ cd server
 npm install
 ```
 
-Copy environment file and set your Gmail credentials:
+Copy environment file and set your Resend API key:
 
 ```bash
 cp .env.example .env
@@ -63,11 +63,11 @@ cp .env.example .env
 Edit `.env`:
 
 ```
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_16_char_gmail_app_password
 PORT=5000
+RESEND_API_KEY=re_xxxxxxxxxxxx
 ```
-Do **not** use your normal Gmail password; use an App Password from Google Account → Security → App passwords.
+
+**Why Resend?** No port blocking (uses HTTPS), no Gmail App Password, works locally and on Vercel, production-ready for OTP.
 
 ### 2. Frontend
 

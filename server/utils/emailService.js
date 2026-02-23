@@ -1,34 +1,29 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
-let transporter = null;
+const FROM = 'OTP Login <onboarding@resend.dev>';
 
-function getTransporter() {
-  if (!transporter) {
-    const user = process.env.EMAIL_USER;
-    const pass = process.env.EMAIL_PASS;
-    if (!user || !pass) {
-      throw new Error('EMAIL_USER and EMAIL_PASS must be set in .env');
-    }
-    transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      auth: { user, pass },
-      requireTLS: true,
-    });
+let client = null;
+
+function getResend() {
+  if (client) return client;
+  let key = process.env.RESEND_API_KEY;
+  if (key && typeof key === 'string') key = key.trim().replace(/^["']|["']$/g, '');
+  if (!key) {
+    throw new Error('RESEND_API_KEY must be set in .env. Get one at https://resend.com/api-keys');
   }
-  return transporter;
+  client = new Resend(key);
+  return client;
 }
 
 async function sendOTPEmail(toEmail, otp) {
-  const transport = getTransporter();
-  await transport.sendMail({
-    from: process.env.EMAIL_USER,
-    to: toEmail,
+  const resend = getResend();
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to: [toEmail],
     subject: 'Your Login OTP Code',
-    text: `Your OTP code is: ${otp}. It is valid for 60 seconds.`,
     html: `<p>Your OTP code is: <strong>${otp}</strong>. It is valid for 60 seconds.</p>`,
   });
+  if (error) throw new Error(error.message || 'Resend failed');
 }
 
 module.exports = { sendOTPEmail };
